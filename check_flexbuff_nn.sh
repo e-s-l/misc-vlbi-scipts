@@ -46,16 +46,18 @@ else
   for SESS in "${EXTANT_CORRELATED_SESSIONS[@]}"; do
     echo $SESS
   done
-  ####################
-  # Now delete them...
-  ####################
+  ###########################
+  # Now delete any matches...
+  ###########################
   read -p "Would you like to delete them? " -n 1 -r
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo; echo "OK, let's delete them..."
+    echo; echo "OK, let's delete them... "
+    echo "Note: user input will be required."
+    echo "Note: select 'a' to delete from all directories."
+    vbs_rm $TEMP*
   else
     echo; echo "Goodbye!"
   fi
-
 fi
 
 exit $EXIT_CODE
