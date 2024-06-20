@@ -15,9 +15,8 @@
 set -e
 #
 EXIT_CODE=0
-#
+# Initialise list to be filled
 EXTANT_CORRELATED_SESSIONS=()
-
 #######################
 # Check argument inputs
 #######################
@@ -52,9 +51,10 @@ else
   read -p "Would you like to delete them? " -n 1 -r
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo; echo "OK, let's delete them... "
-    echo "Note: user input will be required."
-    echo "Note: select 'a' to delete from all directories."
-    vbs_rm $TEMP*
+    echo "Note: user input is required. Select 'a' to delete from all directories."
+    for SESS in "${EXTANT_CORRELATED_SESSIONS[@]}"; do
+      vbs_rm $SESS*
+    done
   else
     echo; echo "Goodbye!"
   fi
