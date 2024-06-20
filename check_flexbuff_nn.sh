@@ -13,13 +13,14 @@
 ########
 # Abort if any non-zero exit status
 set -e
-#
+# Our own exit status
 EXIT_CODE=0
 # Initialise list to be filled
-EXTANT_CORRELATED_SESSIONS=()
-#######################
-# Check argument inputs
-#######################
+extant_correlated_sessions=()
+
+##############
+# Check inputs
+##############
 if [ $# -eq 0 ]
 then
   echo "No parameters specified!"
@@ -28,35 +29,44 @@ then
   EXIT_CODE=1
 else
   ####################
-  # Read input & check
+  # Read input & match
   ####################
   # Input argument is file containing name of experiments we think have been correlated
+  # This file is assumed to be nicely formatted s.t. each session is on a new line
   CORRELATED_SESSIONS_FILE=$1
+
   # Read the input text file line by line, parse each line
   # & fill a list of correlated sessions that exist on the flexbuff
   while read -r line; do
-    TEMP="$(echo $line | awk '{print tolower($0)}' | xargs)"  # covert to lower case, strip white space
-    if [ "$(vbs_ls -lhrt $TEMP*)" ]; then                     # list all the channels for this sesssion & scans
-      EXTANT_CORRELATED_SESSIONS+=("$TEMP")                   # if they exist then add them to the list
+    temp="$(echo $line | awk '{print tolower($0)}' | xargs)"  # covert to lower case, strip white space
+    if [ "$(vbs_ls -lhrt ${temp}*)" ]; then                     # list all the channels for this sesssion & scans
+      extant_correlated_sessions+=("${temp}")                   # if they exist then add them to the list
     fi
   done < $CORRELATED_SESSIONS_FILE
-  # Print the extant correlated sessions
-  echo "The correlated sessions (from your list) that we found on the flexbuff are: "
-  for SESS in "${EXTANT_CORRELATED_SESSIONS[@]}"; do
-    echo $SESS
-  done
-  ###########################
-  # Now delete any matches...
-  ###########################
-  read -p "Would you like to delete them? " -n 1 -r
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo; echo "OK, let's delete them... "
-    echo "Note: user input is required. Select 'a' to delete from all directories."
-    for SESS in "${EXTANT_CORRELATED_SESSIONS[@]}"; do
-      vbs_rm $SESS*
+
+  # Only do this if there are matches
+  if [[ "${#extant_correlated_sessions[@]}" -gt 0 ]]; then
+    # Print the extant correlated sessions
+    echo "The correlated sessions (from your list) that we found on the flexbuff are: "
+    for sess in "${extant_correlated_sessions[@]}"; do
+      echo ${sess}
     done
+
+    ###################
+    # Delete matches...
+    ###################
+    read -p "Would you like to delete them? " -n 1 -r
+    if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+      echo; echo "OK, let's delete them... "
+      echo "Note: user input is required. Select 'a' to delete from all directories."
+      for sess in "${extant_correlated_sessions[@]}"; do
+        vbs_rm ${sess}*
+      done
+    else
+      echo; echo "Goodbye!"
+    fi
   else
-    echo; echo "Goodbye!"
+    echo "There are no matches."
   fi
 fi
 
