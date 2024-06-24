@@ -21,8 +21,7 @@ extant_correlated_sessions=()
 ##############
 # Check inputs
 ##############
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
   echo "No parameters specified!"
   echo "Usage: $0 <input_file>"
   echo "where <input_file> contains list of correlated sessions"
