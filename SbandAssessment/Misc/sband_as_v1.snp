@@ -1,0 +1,20 @@
+" Is this a comment? Let's hope
+" I don't know what I am doing....
+" S-band assessment [2.1, 2.5] GHz
+"
+" Set the scan name
+scan_name=sband-ass-test
+"source=1823+568,182315.01,564918.1,1950.0,ccw
+checkfb
+setup_proc=setupbb
+!+60s
+preob
+!+5s
+disk_record=on
+disk_record
+data_valid=on
+midob
+!+10s
+data_valid=off
+disk_record=off
+postob

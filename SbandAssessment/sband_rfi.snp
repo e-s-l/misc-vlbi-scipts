@@ -1,0 +1,22 @@
+" Short snap to record for 10 seconds for
+" S-band RFI assessment of [2.1, 2.5] GHz
+" I don't know what I am doing...
+"
+" Set the scan name
+scan_name=test1,sbrfi,nn
+" Move to test source (this is the mountian)
+source=azel,XXd,XXd,
+checkfb
+setup_proc=setupbb
+!+10s
+preob
+!+1s
+" Take 10 second recording
+disk_record=on
+disk_record
+data_valid=on
+midob
+!+10s
+data_valid=off
+disk_record=off
+postob
