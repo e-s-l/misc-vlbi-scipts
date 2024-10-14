@@ -1,0 +1,51 @@
+#!/bin/sh
+
+show_spinner() {
+    ########################
+    # simple spinner       #
+    # while proc completes #
+    ########################
+
+    local pid=$1
+    local delay=0.2
+    local spinner=( '-' '\' '|' '/' '-' '+' )
+
+    # Spin while the process is running
+    while kill -0 "$pid" 2>/dev/null; do
+        for i in "${spinner[@]}"; do
+            printf "\b$i"
+            sleep $delay
+        done
+    done
+    printf "\b \b"
+    #printf "\n"
+}
+
+main() {
+
+    #########################
+    # run the mount program #
+    #########################
+
+    echo "mounting vbsfs..."
+
+    # THE WHOLE POINT OF THIS:
+    #vbs_fs /home/oper/data &
+
+    #################################
+    # use ls as test for completion #
+    #################################
+
+    #cmd = "ls /home/oper/"
+    cmd="sleep 5" # debug
+
+    $cmd > /dev/null 2>&1 &
+    cmd_pid=$!
+    show_spinner $cmd_pid
+    wait $cmd_pid
+    echo "...completed"
+}
+
+echo -e "\033[0;34m##################\033[0m"
+main
+echo -e "\033[0;34m##################\033[0m"

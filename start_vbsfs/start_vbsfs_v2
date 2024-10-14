@@ -1,0 +1,75 @@
+#!/bin/sh
+
+
+print_msg() {
+    ####################################
+    # print a coloured control message #
+    ####################################
+
+    local msg="$1"
+    local line_breaker=""
+
+    for ((i = 0; i < ${#msg}+8; i++)); do
+        line_breaker+="-"
+    done
+
+#    echo -e "\n\033[0;34m${line_breaker}\033[0m"
+    echo -e "\033[0;32m    ${msg}    \033[0m"
+    echo -e "\033[0;34m${line_breaker}\033[0m"
+}
+
+show_spinner() {
+    ########################
+    # simple spinner       #
+    # while proc completes #
+    ########################
+
+    local pid=$1
+    local delay=0.1
+    local spinner=( '-' '\' '|' '/' )
+
+    # Spin while the process is running
+    while kill -0 "$pid" 2>/dev/null; do
+        for i in "${spinner[@]}"; do
+            echo -ne "\b$i"
+            sleep $delay
+        done
+    done
+    echo -ne "\b\n"
+}
+
+
+
+time_mounting() {
+    #######################################
+    # time ls                             #
+    # (completes when vbs_fs is finished) #
+    #######################################
+
+    local cmd="$1"
+
+    {
+        TIMEFORMAT=%R
+        rt=$( { time $cmd > /dev/null; } 2>&1 )
+    } &
+
+    local cmd_pid=$!
+
+    show_spinner $cmd_pid
+
+    wait $cmd_pid
+    print_msg "Took $rt"
+}
+
+
+
+
+echo -e "\033[0;34m########################\033[0m"
+
+print_msg "test test"
+#vbs_fs /home/oper/data &
+time_mounting "sleep 5"
+print_msg "good job"
+
+echo -e "\033[0;34m########################\033[0m"
+

@@ -1,0 +1,3 @@
+#!/bin/sh
+vbs_fs /home/oper/data
+
