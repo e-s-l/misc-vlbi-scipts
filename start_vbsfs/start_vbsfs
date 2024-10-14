@@ -2,12 +2,12 @@
 
 #####################
 #
-# start_vbsfs
+# start_vbsfs Version 2
+# a.k.a. 
+# how to turn 2 lines into 69...
 #
 # start the vbs fs mount at ~/data/
 # now featuring a silly spin-loader
-# a.k.a. 
-# how to turn 2 lines into 69...
 #
 # e.s.l. 2024
 #
@@ -57,7 +57,7 @@ main() {
     $cmd > /dev/null 2>&1 &
     # get pid of bg proc
     cmd_pid=$!
-    # show a proc while pid exists
+    # show a spinner while pid exists
     show_spinner $cmd_pid
     # block until done
     wait $cmd_pid
