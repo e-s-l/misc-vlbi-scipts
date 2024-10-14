@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+#####################
+#
+# start_vbsfs
+#
+# start the vbs fs mount at ~/data/
+# now featuring a silly spin-loader
+# a.k.a. 
+# how to turn 1 line into 69...
+#
+# e.s.l. 2024
+#
+####################
 
 show_spinner() {
     ########################
@@ -10,7 +23,7 @@ show_spinner() {
     local delay=0.2
     local spinner=( '-' '\' '|' '/' '-' '+' )
 
-    # Spin while the process is running
+    # spin while running
     while kill -0 "$pid" 2>/dev/null; do
         for i in "${spinner[@]}"; do
             printf "\b$i"
@@ -22,26 +35,31 @@ show_spinner() {
 }
 
 main() {
+    ###############################
+    # run the main prog then      # 
+    # run ls which will           #
+    # complete when mount is done #
+    # naive approach, i am sure   #
+    ###############################
 
-    #########################
-    # run the mount program #
-    #########################
+    ### run the mount program ###
 
     echo "mounting vbsfs..."
 
     # THE WHOLE POINT OF THIS:
-    #vbs_fs /home/oper/data &
+    vbs_fs /home/oper/data
 
-    #################################
-    # use ls as test for completion #
-    #################################
+    ### use ls as test for completion ###
 
-    #cmd = "ls /home/oper/"
-    cmd="sleep 5" # debug
-
+    cmd = "ls /home/oper/"
+    #cmd="sleep 5" # debug
+    # run cmd (ls) in bg
     $cmd > /dev/null 2>&1 &
+    # get pid of bg proc
     cmd_pid=$!
+    # show a proc while pid exists
     show_spinner $cmd_pid
+    # block until done
     wait $cmd_pid
     echo "...completed"
 }

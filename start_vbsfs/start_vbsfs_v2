@@ -28,7 +28,6 @@ show_spinner() {
     local delay=0.1
     local spinner=( '-' '\' '|' '/' )
 
-    # Spin while the process is running
     while kill -0 "$pid" 2>/dev/null; do
         for i in "${spinner[@]}"; do
             echo -ne "\b$i"
