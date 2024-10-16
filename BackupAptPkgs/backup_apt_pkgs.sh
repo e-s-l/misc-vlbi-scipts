@@ -16,12 +16,10 @@ dpkg --get-selections | grep -v deinstall | awk '{print $1}' > $BACKUP_DIR/insta
 cp /etc/apt/sources.list $BACKUP_DIR/sources.list.bak
 
 # copy keys:
-
-cp /etc/apt/trusted.gpg.d/*.gpg "$BACKUP_DIR/GPGKeys"
-
+# DON*T DO THIS:
+# cp /etc/apt/trusted.gpg.d/*.gpg "$BACKUP_DIR/GPGKeys"
 # Deprecated:
 # apt-key exportall > $BACKUP_DIR/apt-repos.keys
-
-
+# Gotta go do some learnin' 'n' come back to this...
 
 

@@ -9,13 +9,11 @@ BACKUP_DIR="./ForRestores"
 cp $BACKUP_DIR/sources.list.bak /etc/apt/sources.list
 
 # copy back the keys:
-
-cp "$BACKUP_DIR/GPGKeys" /etc/apt/trusted.gpg.d/
-
+# IT AIN*T SO SIMPLE....
+# cp "$BACKUP_DIR/GPGKeys" /etc/apt/trusted.gpg.d/
 # fix permissions:
-
-chown root:root /etc/apt/trusted.gpg.d/*.gpg
-chmod 644 /etc/apt/trusted.gpg.d/*.gpg
+# chown root:root /etc/apt/trusted.gpg.d/*.gpg
+# chmod 644 /etc/apt/trusted.gpg.d/*.gpg
 
 # Write extra packages
 aptitude install -y $(cat "$BACKUP_DIR/installed-pkgs.log")

@@ -17,7 +17,8 @@ dpkg --get-selections | grep -v deinstall | awk '{print $1}' > ~/ForRestores/ins
 
 cp /etc/apt/sources.list ~/ForRestores/sources.list.bak
 ```
-<s>apt-key exportall > ~/ForRestores/repositories.keys<\s>
+<strike> 
+apt-key exportall > ~/ForRestores/repositories.keys
 
 Note apt-key's is depreceated... so another approach is (but is this really the right approach?):
 
@@ -27,6 +28,9 @@ cp /etc/apt/trusted.gpg.d/*.gpg "$BACKUP_DIR/gpg_keys/"
 
 ```
 Be wary of user and groups owners and permissions when it comes to these...
+</strike>
+
+*Need to go do some readin' 'n' learnin' 'n' then come back to keys...*
 
 
 Now, run all the above (see shell script) semi-regularly, as a cron?
@@ -50,7 +54,7 @@ run (as root):
 
 `cp ~/ForRestores/sources.list.bak /etc/apt/sources.list`
 
-<s>apt-key add ~/ForRestores/repositories.keys</s>
+<strike> apt-key add ~/ForRestores/repositories.keys </strike>
 
 `apt-get update`
 
