@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+UD=$(date +%s)
+JD=$(( $UD / 86400  + 2440587 ))
+MJD=$( echo "$JD - 2400000.5" | bc )
+
+#echo $UD
+#echo $JD
+#echo $MJD
+
+echo $( echo "$(date +%s) / 86400 + 40586.5" | bc )
